@@ -17,16 +17,18 @@ async function register(req, res) {
 
     // Generate JWT token
     const token = generateToken(newUser);
-    res.status(201).json({
-      message: "User registered successfully",
-      token,
-      user: {
-        id: newUser._id,
-        username: newUser.username,
-        email: newUser.email,
-        role: newUser.role,
-      },
-    });
+    res
+      .status(201)
+      .cookie("token", token, { httpOnly: true })
+      .json({
+        message: "User registered successfully",
+        user: {
+          id: newUser._id,
+          username: newUser.username,
+          email: newUser.email,
+          role: newUser.role,
+        },
+      });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -49,16 +51,18 @@ async function login(req, res) {
 
     // Generate JWT token
     const token = generateToken(user);
-    res.status(200).json({
-      message: "Login successful",
-      token,
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        role: user.role,
-      },
-    });
+    res
+      .status(200)
+      .cookie("token", token, { httpOnly: true })
+      .json({
+        message: "Login successful",
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          role: user.role,
+        },
+      });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }

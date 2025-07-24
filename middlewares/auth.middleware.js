@@ -2,7 +2,7 @@
 const { verifyToken } = require("../services/auth.service");
 
 const authMiddleware = async (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  const token = req.cookies.token;
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
@@ -10,7 +10,7 @@ const authMiddleware = async (req, res, next) => {
     const userPayload = verifyToken(token);
     req.user = userPayload;
   } catch (error) {
-    return res.status(401).json({ message: "Invalid token" });
+    return res.status(401).json({ message: "Invalid token at authMiddleware" });
   }
   next();
 };

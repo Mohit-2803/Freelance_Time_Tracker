@@ -9,7 +9,7 @@ const generateToken = (user) => {
     role: user.role,
   };
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRATION || "1h",
+    expiresIn: "1h",
   });
   return token;
 };
@@ -19,7 +19,8 @@ const verifyToken = (token) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return decoded;
   } catch (error) {
-    throw new Error("Invalid token");
+    console.error("Error verifying token:", error);
+    throw new Error("Invalid token at verifyToken");
   }
 };
 

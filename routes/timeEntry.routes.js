@@ -16,6 +16,7 @@ const {
   getTimeEntriesByUser,
   updateTimeEntry,
   deleteTimeEntry,
+  downloadTimeEntriesPDF,
 } = require("../controllers/timeEntry.controller");
 
 router.post("/", validate(createTimeEntrySchema), createTimeEntry);
@@ -46,5 +47,7 @@ router.delete(
   validate(entryIdParamSchema, "params"),
   deleteTimeEntry
 );
+
+router.get("/download/pdf", downloadTimeEntriesPDF);
 
 module.exports = router;

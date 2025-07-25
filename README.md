@@ -64,6 +64,7 @@ Freelance_Time_Tracker
 ├─ services
 │  └─ auth.service.js
 ├─ utils
+|  |_ pdfGenerator.util.js
 └─ validations
    ├─ auth.schema.js
    ├─ project.schema.js

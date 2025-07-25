@@ -1,5 +1,6 @@
 // timeEntry.controller.js
 const TimeEntry = require("../models/timeEntry.model");
+const { generateTimeEntriesPDF } = require("../utils/pdfGenerator.util");
 
 async function createTimeEntry(req, res) {
   try {
@@ -90,6 +91,26 @@ async function deleteTimeEntry(req, res) {
   }
 }
 
+// To make pdf of the data
+const downloadTimeEntriesPDF = async (req, res) => {
+  try {
+    const entries = await TimeEntry.find().lean();
+
+    const pdfBuffer = await generateTimeEntriesPDF(entries);
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": "attachment; filename=time-entries.pdf",
+      "Content-Length": pdfBuffer.length,
+    });
+
+    res.send(pdfBuffer);
+  } catch (err) {
+    console.error("PDF generation error:", err);
+    res.status(500).json({ message: "Failed to generate PDF" });
+  }
+};
+
 module.exports = {
   createTimeEntry,
   getAllTimeEntries,
@@ -97,4 +118,5 @@ module.exports = {
   getTimeEntriesByUser,
   updateTimeEntry,
   deleteTimeEntry,
+  downloadTimeEntriesPDF,
 };
